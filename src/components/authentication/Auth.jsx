@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Auth.css';
 import PropTypes from 'prop-types';
+import FormValidation from './FormValidation';
 
 const loginRegisterFields = {
     login: [
@@ -8,8 +9,8 @@ const loginRegisterFields = {
         { placeholder: 'password', type: 'password'}
     ],
     register: [
-        { placeholder: 'name', type: 'text'},
-        { placeholder: 'surname', type: 'text'},
+        { placeholder: 'firstName', type: 'text'},
+        { placeholder: 'lastName', type: 'text'},
         { placeholder: 'email', type: 'email'},
         { placeholder: 'password', type: 'password'},
         { placeholder: 'confirmPassword', type: 'password'},
@@ -17,23 +18,44 @@ const loginRegisterFields = {
 }
 
 
-export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister, handleLoginChange, handleRegisterChange}){
-    const fields = loginRegisterFields[currentPage]
+export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister, setDataLogin, setDataRegister}){
+    const fields = loginRegisterFields[currentPage];
+
+    const data = currentPage === 'login' ? dataLogin : dataRegister;
+    const setData = currentPage === 'login' ? setDataLogin : setDataRegister;
+
+    const { errors, validateData, inputChange } = FormValidation({ data, setData });
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateData()) {
+            console.log('Form is valid');
+        }
+    };
     return(
         <>
-        <div className="form-container">
-            <form className='form-fields'>
+        <div className="form-container" >
+            <form className='form-fields' onSubmit={handleSubmit}>
                 <h2>{currentPage}</h2>
                 {fields.map((field, index)=>(
-                    <input key={index} 
+                    <div key={index} className='input-container'>
+                        <input  
                            type={field.type} 
                            placeholder={field.placeholder} 
                            name={field.placeholder} 
-                           value={currentPage === 'login' ? dataLogin[field.placeholder] : dataRegister[field.placeholder]} 
-                           onChange={currentPage ==='login' ? handleLoginChange : handleRegisterChange}/>
-                ))
+                           value={data[field.placeholder]} 
+                           onChange={inputChange}
+                           className={errors[field.placeholder] ? 'invalid-shadow' : ''}
+                        />
+                        {errors[field.placeholder] && (
+                            <span className="error-message">{errors[field.placeholder]}</span>
+                        )} 
 
-                }
+                    </div>
+                     
+                
+                ))}
                 
                 <button className='form-button'>{currentPage}</button>
             </form>
@@ -54,6 +76,6 @@ Auth.propTypes = {
     text: PropTypes.any,
     dataLogin: PropTypes.any,
     dataRegister: PropTypes.any,
-    handleLoginChange: PropTypes.any,
-    handleRegisterChange : PropTypes.any
+    setDataLogin: PropTypes.any,
+    setDataRegister : PropTypes.any
 };

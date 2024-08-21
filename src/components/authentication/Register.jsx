@@ -4,25 +4,25 @@ import Auth from './Auth';
 
 export default function Register(){
     const [dataRegister, setDataRegister] = useState({
-        surname: '',
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         confirmPassword: ''
     })
 
-    function handleRegisterChange(e){
-        const{value, name} = e.target;
-        setDataRegister((prevInput)=>({
-            ...prevInput,
-            [name]:value
-        }))
-    }
+    // function handleRegisterChange(e){
+    //     const{value, name} = e.target;
+    //     setDataRegister((prevInput)=>({
+    //         ...prevInput,
+    //         [name]:value
+    //     }))
+    // }
     // console.log(dataRegister);
     
     return(
         <>
-            <Auth currentPage='register' text="Do you have an account?" nextPage='login' dataRegister={dataRegister} handleRegisterChange={handleRegisterChange} />
+            <Auth currentPage='register' text="Do you have an account?" nextPage='login' dataRegister={dataRegister} setDataRegister={setDataRegister} />
         </>
     )
 }
