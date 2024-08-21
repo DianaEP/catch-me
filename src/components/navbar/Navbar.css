@@ -1,0 +1,87 @@
+.nav-container{
+    display: flex; 
+    justify-content: flex-start;
+    column-gap: 2rem;
+    padding: 1rem;
+    background-color: transparent;
+    border-radius: 25px;
+    box-shadow: 0px 0px 5px 0px var(--color1);
+    margin: 1rem;
+ }
+ 
+ .nav-container .logo svg{
+     color: var(--color3);
+     font-size: 1.7rem;
+     margin-left: 1rem;
+      
+ }
+ 
+ .nav-container .logo svg:hover{
+     animation: slide 1s ease-in-out;
+     cursor: pointer;
+ }
+ 
+ 
+ .links-container{
+     display: flex;
+     justify-content: space-between;
+     list-style-type: none;
+     padding-top: 0.2rem;
+     margin-right: 2rem;
+     width: 100%;
+     
+ }
+
+ .links-container div:first-of-type{
+    display: flex;
+    column-gap: 2rem;
+ }
+ 
+ .links-container li a{
+     color: var(--font-color2);
+     text-decoration: none;
+     cursor: pointer;
+     font-family: var(--font-family2);
+     position: relative;
+     padding-bottom: 2px;
+ 
+     
+ }
+ 
+ .links-container li a::after {
+     content: '';
+     position: absolute;
+     width: 0;
+     height: 2px; 
+     display: block;
+     margin-top: 5px;
+     right: 0;
+     background: var(--color3);
+     transition: width 0.3s ease;
+     -webkit-transition: width 0.3s ease;
+ }
+ 
+ .links-container li a:hover::after {
+     width: 100%;
+     left: 0;
+     background: var(--color3);
+ }
+ 
+ 
+ 
+ #login-link a{
+     color:var(--color3)
+ }
+ 
+ @keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+ 
