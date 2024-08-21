@@ -1,0 +1,125 @@
+.form-container{
+    width:50%;
+    height: 70%;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50% , -50%);
+    display: flex; 
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0px 0px 5px 0px var(--color2);
+   border-radius: 20px;
+}
+
+.form-fields{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    align-items: center;
+    padding: 1.2rem;
+
+
+}
+
+.form-fields h2{
+    font-family: var(--font-family1);
+    color: var(--font-color2);
+    text-transform: capitalize;
+}
+
+.form-fields input{
+    width: 60%;
+    padding: 0.6rem;
+    border-radius: 10px;
+    border: none;
+    background-color: transparent;
+    color: var(--font-color2);
+    font-size: 1rem;
+    box-shadow: 0 1px 8px var(--color1);
+    outline: none;
+    transition: box-shadow 0.5s ease;
+
+}
+
+.form-fields input:focus {
+    box-shadow: 0 1px 8px var(--font-color2);
+}
+
+.form-fields input::placeholder{
+    text-transform: capitalize;
+    font-size: 1rem;
+    color: #f4e8d8a3;
+}
+
+.form-button{
+    text-transform: capitalize;
+    width: 60%;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: 0 1px 6px var(--font-color2);
+    color: var(--font-color2);
+    cursor: pointer;
+    transition: box-shadow 0.5s ease, color 0.5s ease;
+}
+
+.form-button:hover{
+    box-shadow: 0 1px 6px var(--color3);
+    color: var(--color3);
+    
+}
+
+.link-container span{
+    margin-right: 0.3rem;
+    
+    
+}
+
+.link-container p{
+    /* text-transform: none; */
+    color: #f4e8d8a3;
+    font-size: 0.9rem;
+
+    
+}
+
+
+.link-container a{
+    text-transform: capitalize;
+    color: var(--font-color2);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+    position: relative;
+    
+}
+
+.link-container a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1.5px; 
+    display: block;
+    margin-top: 1px;
+    right: 0;
+    background: var(--color3);
+    transition: width 0.3s ease;
+    -webkit-transition: width 0.3s ease;
+}
+
+.link-container  a:hover::after {
+    width: 100%;
+    left: 0;
+    background: var(--color3);
+}
+
+
+/* .link-container a:hover{
+    color: var(--font-color2);
+} */

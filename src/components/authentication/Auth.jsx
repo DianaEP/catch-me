@@ -22,7 +22,8 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
     return(
         <>
         <div className="form-container">
-            <form className='input-fields'>
+            <form className='form-fields'>
+                <h2>{currentPage}</h2>
                 {fields.map((field, index)=>(
                     <input key={index} 
                            type={field.type} 
@@ -34,21 +35,18 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
 
                 }
                 
-                <button>{currentPage}</button>
+                <button className='form-button'>{currentPage}</button>
             </form>
-            <div>
-
+            <div className="link-container">
+                <p><span>{text}</span> <Link to={`/${nextPage}`}>{nextPage}</Link></p>
             </div>
-                <div className="link-container">
-                        <p><span>{text}</span> <Link to={`/${nextPage}`}>{nextPage}</Link></p>
-                    </div>
             
             </div> 
         </>
     )
 }
 
-// value={{dataLogin.`${placeholder}`}}
+
 
 Auth.propTypes = {
     currentPage: PropTypes.any,
