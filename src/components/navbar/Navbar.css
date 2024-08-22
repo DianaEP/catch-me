@@ -1,17 +1,22 @@
 .nav-container{
     display: flex; 
     justify-content: flex-start;
-    column-gap: 2rem;
+    /* align-items: center; */
+    column-gap: 1rem;
     padding: 1rem;
     background-color: transparent;
     border-radius: 25px;
     box-shadow: 0px 0px 5px 0px var(--color1);
     margin: 1rem;
  }
+
+ .logo{
+    padding-top: 0.2rem;
+ }
  
  .nav-container .logo svg{
      color: var(--color3);
-     font-size: 1.7rem;
+     font-size: 1rem;
      margin-left: 1rem;
       
  }
@@ -25,8 +30,9 @@
  .links-container{
      display: flex;
      justify-content: space-between;
+     align-items: center;
      list-style-type: none;
-     padding-top: 0.2rem;
+     /* padding-top: 0.2rem; */
      margin-right: 2rem;
      width: 100%;
      

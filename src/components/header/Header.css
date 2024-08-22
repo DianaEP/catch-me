@@ -5,7 +5,7 @@
     align-items: center;
     row-gap: 2rem;
     color: var(--font-color2);
-    margin-top: 3rem;
+    margin: 3rem 0 2rem 0;
 }
 
 .header-container h1{

@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import './Navbar.css'
-import { GiRunningNinja } from "react-icons/gi";
+import { FaPaw } from "react-icons/fa";
 
 export default function Navbar(){
     return(
         <>
             <nav className="nav-container">
                 <div className="logo">
-                    <GiRunningNinja />
+                    <FaPaw />
                 </div>
                 <ul className="links-container">
                     <div>
