@@ -22,6 +22,7 @@
     font-size: 20px;
     font-weight: bold;
     position: relative;
+    cursor: pointer;
   }
 
   .random-img{
@@ -33,4 +34,20 @@
     height: 80%;
     /* object-fit:contain; */
     padding: 0.2rem;
+  }
+
+  .wrong-message{
+    
+    text-align: center;
+    
+    
+  }
+
+  .timer-and-message{
+    width: 35%;
+    margin: 2rem auto;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    color: var(--font-color2);
   }
