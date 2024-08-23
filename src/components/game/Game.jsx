@@ -1,10 +1,10 @@
 import './Game.css'
-// import { gridItems } from '../../data';
 import { useContext, useEffect, useRef, useState } from 'react';
 import imageSrc from '../../assets/kitty.svg'
 import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
 import { ScoreContext } from '../../App';
+import { v4 as uuidv4 } from 'uuid';
 
 const wrongItemMessage =[
     "Wrong ... Try again!",
@@ -38,6 +38,8 @@ async function postScore(score){
             body: JSON.stringify(score),
           });
         const data = await response.json();
+        console.log(data);
+        
 
     }catch(error){
         console.error('Error fetching grid items:', error);
@@ -58,8 +60,8 @@ export default function Game(){
     
     const [initialTime, setInitialTime] = useState(30);
 
-    const [nextId, setNextId] = useState(1); 
     const intervalRef = useRef(null);
+    const uniqueId = uuidv4();
 
 
 
@@ -80,7 +82,8 @@ export default function Game(){
         if(timer <= 0){
             clearInterval(intervalRef.current);
             setMessage("I knew it! Time is up... Try again!")
-            setGameOver(true)
+            setGameOver(true);
+            setScore((prevScore) => [...prevScore, { id: uniqueId, score: 0 }]);
         }
     },[timer])
 
@@ -106,12 +109,12 @@ export default function Game(){
         const randomIndexMessage = Math.floor(Math.random()* wrongItemMessage.length);
         if(itemId === randomItem.id){
             const timeTaken = initialTime - timer;
+            
             setMessage("Good job! You're not that bad after all.");
             setGameOver(true);
-            setScore((prevScore) => [...prevScore, {id:nextId, score: timeTaken}]);
-            setNextId(prevId => prevId + 1);
+            setScore((prevScore) => [...prevScore, {id:uniqueId, score: timeTaken}]);
             clearInterval(intervalRef.current);
-            await postScore({ id: nextId, score: timeTaken });
+            await postScore({ id: uniqueId, score: timeTaken });
         } else {
             setWrongMessage(wrongItemMessage[randomIndexMessage]);
         }
