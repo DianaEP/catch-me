@@ -1,9 +1,10 @@
 import './Game.css'
-import { gridItems } from '../../data'
-import { useEffect, useRef, useState } from 'react';
+// import { gridItems } from '../../data';
+import { useContext, useEffect, useRef, useState } from 'react';
 import imageSrc from '../../assets/kitty.svg'
 import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
+import { ScoreContext } from '../../App';
 
 const wrongItemMessage =[
     "Wrong ... Try again!",
@@ -15,22 +16,65 @@ const wrongItemMessage =[
     "I'm so sleepy!"
 ]
 
-export default function Game({setScore, score}){
-    const [randomItem, setRandomItem] = useState(getRandomItem());
+async function getGridItem(setGridItems){
+    try{
+        const response = await fetch('http://localhost:3000/gridItems');
+        const data = await response.json();
+        setGridItems(data);
+
+    }catch(error){
+        console.error('Error fetching grid items:', error);
+    }
+}
+
+async function postScore(score){
+    try{
+        const response = await fetch('http://localhost:3000/score', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            //   Authorization: `Bearer ${userAuth.token}`,
+            },
+            body: JSON.stringify(score),
+          });
+        const data = await response.json();
+
+    }catch(error){
+        console.error('Error fetching grid items:', error);
+    }
+}
+
+export default function Game(){
+
+    const { setScore, score } = useContext(ScoreContext);
+
+    const [gridItems, setGridItems] = useState([]);
+
+    const [randomItem, setRandomItem] = useState(null);
     const [message, setMessage] = useState('');
     const [wrongMessage, setWrongMessage] = useState('');
     const [gameOver, setGameOver] = useState(false);
     const [timer, setTimer] = useState(30);
     
     const [initialTime, setInitialTime] = useState(30);
+
+    const [nextId, setNextId] = useState(1); 
     const intervalRef = useRef(null);
 
 
+
     useEffect(()=>{
-        startRandomItemInterval();
-        
-        return ()=> clearInterval(intervalRef.current);
+        getGridItem(setGridItems)
     },[])
+ 
+    useEffect(() => {
+        if (gridItems.length > 0 && !gameOver) {
+            startRandomItemInterval();
+            setRandomItem(getRandomItem());
+        }
+
+        return () => clearInterval(intervalRef.current);
+    }, [gridItems, gameOver]);
 
     useEffect(()=>{
         if(timer <= 0){
@@ -41,30 +85,33 @@ export default function Game({setScore, score}){
     },[timer])
 
 
+
     function getRandomItem(){
+        if (gridItems.length === 0) return null
         const randomIndex= Math.floor(Math.random()* gridItems.length);
-        const randomItem = gridItems[randomIndex];
-        return randomItem;
+        return gridItems[randomIndex];
     }
 
+   
     function startRandomItemInterval(){
         intervalRef.current= setInterval(()=>{
             setTimer(prevTime => prevTime - 1);
-            setInitialTime(30);
             setRandomItem(getRandomItem())
         },1000);
     }
 
 
-    function handleClick(itemId){
+    async function handleClick(itemId){
+        if (!randomItem) return; 
         const randomIndexMessage = Math.floor(Math.random()* wrongItemMessage.length);
         if(itemId === randomItem.id){
             const timeTaken = initialTime - timer;
             setMessage("Good job! You're not that bad after all.");
             setGameOver(true);
-            setScore(timeTaken);
+            setScore((prevScore) => [...prevScore, {id:nextId, score: timeTaken}]);
+            setNextId(prevId => prevId + 1);
             clearInterval(intervalRef.current);
-            intervalRef.current = null;
+            await postScore({ id: nextId, score: timeTaken });
         } else {
             setWrongMessage(wrongItemMessage[randomIndexMessage]);
         }
@@ -77,7 +124,6 @@ export default function Game({setScore, score}){
         setWrongMessage('');
         setGameOver(false); 
         setTimer(30);
-        setScore(0);
         setInitialTime(30);
         startRandomItemInterval();
     }
@@ -93,13 +139,13 @@ export default function Game({setScore, score}){
                     <div key={item.id} 
                          className='grid-item'
                          onClick={()=>handleClick(item.id)}>
-                        {item.id === randomItem.id && (  
+                        {randomItem && item.id === randomItem.id && (
                             <img
-                              src={imageSrc}
-                              alt="Randomly Moved Image"
-                              className='random-img'
+                                src={imageSrc}
+                                alt="Randomly Moved Image"
+                                className='random-img'
                             />
-                    )}</div>    
+                        )}</div>    
                 ))}
                 
             </div>

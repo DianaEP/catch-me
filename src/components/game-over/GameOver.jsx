@@ -6,9 +6,19 @@ import imageSrc from '../../assets/kitty.svg';
 
 export default function GameOver({message,resetGame,score}){
 
+    console.log(score);
+    
+
     function handleGameOverClick(){
         resetGame();
     }
+
+    const latestScore = score.length > 0 ? score[score.length - 1].score : 0;
+
+    // console.log(latestScore);
+    
+   
+    
     return(
         <div className="message-container">
             <div className="message">
@@ -17,7 +27,7 @@ export default function GameOver({message,resetGame,score}){
                     <img src={imageSrc} alt="game-over-image" />
                     <p>{message}</p>
                 </div>
-                <p>Score :<span>{score}</span></p>
+                <p>Score :<span>{latestScore}</span></p>
                 <button className='game-over-button' onClick={handleGameOverClick}>Play again</button>
             </div>
                 

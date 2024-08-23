@@ -11,7 +11,12 @@ import { createContext, useState } from 'react'
 export const ScoreContext = createContext();
 
 function App() {
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState([]);
+
+  console.log(score)
+  console.log(setScore)
+  
+  
   
   return (
     <>
