@@ -18,7 +18,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    row-gap: 4rem;
+    row-gap: 2.5rem;
     border-radius: 10px;
     box-shadow: 0 0px 15px var(--color3);    
 }
@@ -27,6 +27,17 @@
     font-size: 3rem;
     font-family: var(--font-family1);
     color: var(--color3);
+}
+
+.message p{
+    color: var(--font-color2);
+    font-weight: 500;   
+}
+
+.message span{
+    color: var(--color3);
+    margin-left: 0.8rem;
+    font-size: 1.1rem;
 }
 
 

@@ -4,7 +4,7 @@ import imageSrc from '../../assets/kitty.svg';
 
 
 
-export default function GameOver({message,resetGame}){
+export default function GameOver({message,resetGame,score}){
 
     function handleGameOverClick(){
         resetGame();
@@ -17,6 +17,7 @@ export default function GameOver({message,resetGame}){
                     <img src={imageSrc} alt="game-over-image" />
                     <p>{message}</p>
                 </div>
+                <p>Score :<span>{score}</span></p>
                 <button className='game-over-button' onClick={handleGameOverClick}>Play again</button>
             </div>
                 
@@ -27,5 +28,6 @@ export default function GameOver({message,resetGame}){
 GameOver.propTypes = {
     message: PropTypes.any,
     resetGame: PropTypes.any,
+    score: PropTypes.any,
     
   }
