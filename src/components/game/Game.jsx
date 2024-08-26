@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import imageSrc from '../../assets/kitty.svg'
 import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
-import { ScoreContext } from '../../App';
+import { ScoreContext, UserAuth } from '../../App';
 import { v4 as uuidv4 } from 'uuid';
 
 const wrongItemMessage =[
@@ -16,11 +16,18 @@ const wrongItemMessage =[
     "I'm so sleepy!"
 ]
 
-async function getGridItem(setGridItems){
+async function getGridItem(setGridItems,userAuth){
     try{
-        const response = await fetch('http://localhost:3000/gridItems');
+        const response = await fetch('http://localhost:3000/gridItems',{
+            headers: {
+                Authorization: `Bearer ${userAuth}`,
+              },
+        });
         const data = await response.json();
-        setGridItems(data);
+        if(response.ok){
+
+            setGridItems(data);
+        }
 
     }catch(error){
         console.error('Error fetching grid items:', error);
@@ -47,11 +54,10 @@ async function postScore(score){
 }
 
 export default function Game(){
+    const {userAuth} = useContext(UserAuth);
 
     const { setScore, score } = useContext(ScoreContext);
-
     const [gridItems, setGridItems] = useState([]);
-
     const [randomItem, setRandomItem] = useState(null);
     const [message, setMessage] = useState('');
     const [wrongMessage, setWrongMessage] = useState('');
@@ -63,11 +69,14 @@ export default function Game(){
     const intervalRef = useRef(null);
     const uniqueId = uuidv4();
 
+    // console.log('game'+userAuth);
 
 
     useEffect(()=>{
-        getGridItem(setGridItems)
-    },[])
+        if(userAuth){
+            getGridItem(setGridItems, userAuth)
+        }
+    },[userAuth])
  
     useEffect(() => {
         if (gridItems.length > 0 && !gameOver) {

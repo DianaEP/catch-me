@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 import PropTypes from 'prop-types';
 import FormValidation from './FormValidation';
+import { useContext } from 'react';
+import { UserAuth } from '../../App';
 
 const loginRegisterFields = {
     login: [
@@ -17,8 +19,52 @@ const loginRegisterFields = {
     ]
 }
 
+async function register(dataRegister,navigate){
+    try{
+        const response = await fetch('http://localhost:3000/register',{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+              //   Authorization: `Bearer ${userAuth.token}`,
+              },
+            body: JSON.stringify(dataRegister)
+        })
+        console.log(response);
+        navigate('/login')
+        
+    }catch(error){
+        console.error('failed to fetch register'+ error)
+    }
+}
+
+async function login(dataLogin,navigate, setUserAuth){
+    try{
+        const response = await fetch('http://localhost:3000/login',{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                // Authorization: `Bearer ${userAuth.token}`,
+              },
+            body: JSON.stringify(dataLogin)
+        })
+        const body = await response.json();
+        if(response.ok){
+            localStorage.setItem('accessToken' , JSON.stringify(body.accessToken));
+            setUserAuth(body.accessToken)
+            navigate('/')
+            // console.log(body);
+
+        }
+        
+    }catch(error){
+        console.error('failed to fetch register'+ error)
+    }
+}
+
 
 export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister, setDataLogin, setDataRegister}){
+    const {userAuth, setUserAuth} = useContext(UserAuth);
+    const navigate = useNavigate();
     const fields = loginRegisterFields[currentPage];
 
     const data = currentPage === 'login' ? dataLogin : dataRegister;
@@ -27,16 +73,32 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
     const { errors, validateData, inputChange } = FormValidation({ data, setData });
 
 
-    const handleSubmit = (e) => {
+    console.log('auth'+userAuth);
+    const handleSubmitRegister = (e) => {
+        e.preventDefault();
+        const {confirmPassword, ...restDataRegister} = dataRegister;
+        if(dataRegister.password !== confirmPassword){
+            console.log("password don't match");
+            
+            
+        }
+        if (validateData()) {
+            register(restDataRegister,navigate)
+            console.log('Form is valid');
+        }
+    };
+
+    const handleSubmitLogin = (e) => {
         e.preventDefault();
         if (validateData()) {
+            login(dataLogin,navigate,setUserAuth);
             console.log('Form is valid');
         }
     };
     return(
         <>
         <div className="form-container" >
-            <form className='form-fields' onSubmit={handleSubmit}>
+            <form className='form-fields' onSubmit={currentPage === 'register' ? handleSubmitRegister : handleSubmitLogin}>
                 <h2>{currentPage}</h2>
                 {fields.map((field, index)=>(
                     <div key={index} className='input-container'>

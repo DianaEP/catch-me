@@ -1,4 +1,20 @@
 {
+  "users": [
+    {
+      "email": "test@gmail.com",
+      "password": "$2a$10$fuQd9mK4W9cwbFsnFqfTDevTZ0b1pPQh1DJTMY/A268D6.9Ycq8OO",
+      "firstName": "Martha",
+      "lastName": "Jones",
+      "id": 1
+    },
+    {
+      "email": "test2@gmail.com",
+      "password": "$2a$10$Co7UG1ea10yAos4AUtIPPumk8ZR9Z5ubxEBAtVN4cejCBM2VcaNni",
+      "firstName": "Stafania",
+      "lastName": "Jones",
+      "id": 2
+    }
+  ],
   "gridItems": [
     {
       "id": 1,
