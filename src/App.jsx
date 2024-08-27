@@ -1,5 +1,5 @@
 
-import { Navigate, Route, Routes} from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation} from 'react-router-dom'
 import './App.css'
 import Navbar from './components/navbar/Navbar'
 import Home from './components/home/Home'
@@ -18,6 +18,9 @@ function App() {
     userId : localStorage.getItem('userId') || null
   });
 
+  const location = useLocation(); 
+  const currentPath = location.pathname.toLowerCase();
+
   
   useEffect(()=>{
     const userToken = localStorage.getItem('accessToken');
@@ -35,15 +38,18 @@ function App() {
     }
   },[])
 
+  // console.log('Current Path:', location.pathname);
+
   // private routes
   const isAuthenticated = userAuth.accessToken && userAuth.userId;
+  const hideNavbar = currentPath !== '/login' && currentPath !== '/register';
 
   return (
     <>
       
       <ScoreContext.Provider value={{score, setScore}}>
         <AuthContext.Provider value={{userAuth, setUserAuth}}>
-          <Navbar/>
+          {hideNavbar && <Navbar />}
           <Routes>
             <Route path='/' element={isAuthenticated ? <Home/> : <Navigate to='/login'/>}></Route>
             <Route path='/score' element={isAuthenticated ? <Score/> : <Navigate to='/login'/>}></Route>
