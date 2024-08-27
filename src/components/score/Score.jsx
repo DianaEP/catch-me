@@ -1,30 +1,16 @@
 import { useContext, useEffect } from 'react'
 import './Score.css'
 import { AuthContext, ScoreContext } from '../../App'
+import { getScore } from '../../fetch';
 
-async function getScore(setScore, token){
-    try{
-        const response= await fetch('http://localhost:3000/score',{
-            headers: {
-                 Authorization: `Bearer ${token}`,
-                 'Content-Type': 'application/json',
-            }
-        }
-        )
-        const data = await response.json();
-        setScore(data)
-        console.log(token);
-        
-    }catch(error){
-        console.error('Error fetching scores:', error)
-    }
-}
+
+
 
 export default function Score(){
     const {score, setScore} = useContext(ScoreContext);
     const {userAuth} = useContext(AuthContext);
-    console.log(userAuth);
-    console.log(userAuth.accessToken);
+    // console.log(userAuth);
+    // console.log(userAuth.accessToken);
     useEffect(()=>{
         getScore(setScore, userAuth.accessToken);
     },[])
@@ -48,7 +34,7 @@ export default function Score(){
                 <ul>
                     {firstFiveScores.map((scoreEntry) => (
                         <li key={scoreEntry.id}>
-                            Score: {scoreEntry.score}s
+                            {scoreEntry.userName}: {scoreEntry.score}s
                         </li>
                     ))}
                 </ul>

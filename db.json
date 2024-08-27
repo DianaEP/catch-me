@@ -13,6 +13,27 @@
       "firstName": "Stafania",
       "lastName": "Jones",
       "id": 2
+    },
+    {
+      "email": "test3@gmail.com",
+      "password": "$2a$10$QOvhlBzNPMwrfaiBGTeqWeBpFQUhMIeuO2nqdiksCkyilqD9BQ4Yy",
+      "firstName": "Maya",
+      "lastName": "Seby",
+      "id": 3
+    },
+    {
+      "email": "test4@gmail.com",
+      "password": "$2a$10$4K2/38LHg/Er1CtjlTiTVORbR17yRRBWxH.UQ0ejFtlLmkCtRThOG",
+      "firstName": "Alina",
+      "lastName": "Sebi",
+      "id": 4
+    },
+    {
+      "email": "test5@gmail.com",
+      "password": "$2a$10$kbGS/qFkEsJIOdLnHsDO6OgUN4Kvc26zCC2/L25nWTQiKJJgbvRs6",
+      "firstName": "John",
+      "lastName": "Ionescu",
+      "id": 5
     }
   ],
   "gridItems": [
@@ -144,32 +165,44 @@
   ],
   "score": [
     {
-      "id": "0a8ca6d4-2dcb-42e6-9746-d6b26859227f",
-      "score": 8
+      "id": "4ed8ee5c-a059-4bf3-bef2-5184b2583ddf",
+      "score": 3,
+      "userName": "Martha"
     },
     {
-      "id": "f61fe9d3-977e-4288-9a77-d6b51075c234",
-      "score": 5
+      "id": "e3b67e25-8ac7-461a-9bf7-5b9ec74f3e5e",
+      "score": 6,
+      "userName": "Stafania"
     },
     {
-      "id": "88efea2a-8341-4718-976e-1a92dbd56787",
-      "score": 17
+      "id": "cdad49c9-e590-4e33-bbe7-5938bce60e74",
+      "score": 12,
+      "userName": "Maya"
     },
     {
-      "id": "1874cd6f-7f4b-45cc-9cc6-f753933c20f6",
-      "score": 1
+      "id": "b42a334f-5be0-4bed-82b1-93e99b6df745",
+      "score": 2,
+      "userName": "Maya"
     },
     {
-      "id": "74de5f08-c4e1-4964-9e27-252f79f4625d",
-      "score": 1
+      "id": "342d7608-3224-4f0b-a9c2-0cb743fa6ffc",
+      "score": 3,
+      "userName": "Maya"
     },
     {
-      "id": "9fa899f7-c16a-4f90-8e3d-a2b098aea737",
-      "score": 4
+      "id": "5176ee13-3512-4c4e-9009-b88be8063f1f",
+      "score": 10,
+      "userName": "Alina"
     },
     {
-      "id": "9d376aff-adb8-4acb-b71e-62762ad1959e",
-      "score": 3
+      "id": "8ff885c8-e19d-4c1e-ba02-6bc0e224e55d",
+      "score": 16,
+      "userName": "John"
+    },
+    {
+      "id": "26babefe-23b8-442b-bbb7-b556d6902721",
+      "score": 4,
+      "userName": "Martha"
     }
   ]
 }

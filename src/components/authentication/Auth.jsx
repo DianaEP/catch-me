@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import FormValidation from './FormValidation';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
+import { register } from '../../fetch';
+import { login } from '../../fetch';
 
 const loginRegisterFields = {
     login: [
@@ -19,55 +21,10 @@ const loginRegisterFields = {
     ]
 }
 
-async function register(dataRegister,navigate){
-    try{
-        const response = await fetch('http://localhost:3000/register',{
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-              //   Authorization: `Bearer ${userAuth.token}`,
-              },
-            body: JSON.stringify(dataRegister)
-        })
-        console.log(response);
-        navigate('/login')
-        
-    }catch(error){
-        console.error('failed to fetch register'+ error)
-    }
-}
-
-async function login(dataLogin,navigate, setUserAuth){
-    try{
-        const response = await fetch('http://localhost:3000/login',{
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                // Authorization: `Bearer ${userAuth.token}`,
-              },
-            body: JSON.stringify(dataLogin)
-        })
-        const body = await response.json();
-        if(response.ok){
-            localStorage.setItem('accessToken' , body.accessToken);
-            localStorage.setItem('userId' , body.user.id);
-            setUserAuth({
-                accessToken : body.accessToken,
-                userId : body.user.id
-            })
-            navigate('/')
-            console.log(body);
-
-        }
-        
-    }catch(error){
-        console.error('failed to fetch register'+ error)
-    }
-}
 
 
 export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister, setDataLogin, setDataRegister}){
-    const {userAuth, setUserAuth} = useContext(AuthContext);
+    const {setUserAuth} = useContext(AuthContext);
     const navigate = useNavigate();
     const fields = loginRegisterFields[currentPage];
 
@@ -77,7 +34,7 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
     const { errors, validateData, inputChange } = FormValidation({ data, setData });
 
 
-    console.log('auth'+userAuth.accessToken);
+    // console.log('auth'+userAuth.accessToken);
 
     const handleSubmitRegister = (e) => {
         e.preventDefault();
@@ -88,7 +45,7 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
             
         }
         if (validateData()) {
-            register(restDataRegister,navigate)
+            register(restDataRegister,navigate,setUserAuth)
             console.log('Form is valid');
         }
     };

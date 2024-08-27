@@ -6,7 +6,7 @@ import imageSrc from '../../assets/kitty.svg';
 
 export default function GameOver({message,resetGame,score}){
 
-    console.log(score);
+    // console.log(score);
     
 
     function handleGameOverClick(){

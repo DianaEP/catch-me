@@ -1,5 +1,5 @@
 
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes} from 'react-router-dom'
 import './App.css'
 import Navbar from './components/navbar/Navbar'
 import Home from './components/home/Home'
@@ -17,7 +17,6 @@ function App() {
     accessToken : localStorage.getItem('accessToken') || null,
     userId : localStorage.getItem('userId') || null
   });
-  const navigate = useNavigate();
 
   
   useEffect(()=>{
@@ -32,15 +31,13 @@ function App() {
       setUserAuth({
         accessToken : null,
         userId : null
-      })
-      navigate('/login');
+      })  
     }
-  },[navigate])
+  },[])
 
-  console.log('Stored token:', localStorage.getItem('accessToken'));
+  // private routes
+  const isAuthenticated = userAuth.accessToken && userAuth.userId;
 
-  
-  
   return (
     <>
       
@@ -48,8 +45,8 @@ function App() {
         <AuthContext.Provider value={{userAuth, setUserAuth}}>
           <Navbar/>
           <Routes>
-            <Route path='/' element={<Home/>}></Route>
-            <Route path='/score' element={<Score/>}></Route>
+            <Route path='/' element={isAuthenticated ? <Home/> : <Navigate to='/login'/>}></Route>
+            <Route path='/score' element={isAuthenticated ? <Score/> : <Navigate to='/login'/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/register' element={<Register/>}></Route>
           </Routes>

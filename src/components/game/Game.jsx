@@ -5,6 +5,9 @@ import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
 import { AuthContext, ScoreContext} from '../../App';
 import { v4 as uuidv4 } from 'uuid';
+import { getGridItem } from '../../fetch';
+import { postScore } from '../../fetch';
+import { getUserName } from '../../fetch';
 
 const wrongItemMessage =[
     "Wrong ... Try again!",
@@ -16,75 +19,40 @@ const wrongItemMessage =[
     "I'm so sleepy!"
 ]
 
-async function getGridItem(setGridItems,token){
-    try{
-        const response = await fetch('http://localhost:3000/gridItems',{
-            headers: {
-                Authorization: `Bearer ${token}`,
-              },
-        });
-        const data = await response.json();
-        if(response.ok){
-
-            setGridItems(data);
-        }
-
-    }catch(error){
-        console.error('Error fetching grid items:', error);
-    }
-}
-
-async function postScore(score){
-    try{
-        const response = await fetch('http://localhost:3000/score', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            //   Authorization: `Bearer ${userAuth.token}`,
-            },
-            body: JSON.stringify(score),
-          });
-        const data = await response.json();
-        console.log(data);
-        
-
-    }catch(error){
-        console.error('Error fetching grid items:', error);
-    }
-}
+const INITIAL_TIMER = 30;
 
 export default function Game(){
     const {userAuth} = useContext(AuthContext);
-
     const { setScore, score } = useContext(ScoreContext);
+
     const [gridItems, setGridItems] = useState([]);
     const [randomItem, setRandomItem] = useState(null);
     const [message, setMessage] = useState('');
     const [wrongMessage, setWrongMessage] = useState('');
     const [gameOver, setGameOver] = useState(false);
-    const [timer, setTimer] = useState(30);
-    
-    const [initialTime, setInitialTime] = useState(30);
+    const [timer, setTimer] = useState(INITIAL_TIMER);
+    const [initialTime, setInitialTime] = useState(INITIAL_TIMER);
+    const [userName, setUserName] = useState('');
 
     const intervalRef = useRef(null);
     const uniqueId = uuidv4();
 
-    // console.log('game'+userAuth);
-
 
     useEffect(()=>{
-        const token = userAuth.accessToken
-        if(token){
-            getGridItem(setGridItems, token)
+        if(userAuth.accessToken && userAuth.userId){
+            getGridItem(setGridItems, userAuth.accessToken);
+            getUserName(userAuth.userId,userAuth.accessToken, setUserName)
         }
-    },[userAuth.accessToken])
+    },[userAuth.accessToken, userAuth.userId])
+
+    // console.log(userName);
+    
  
     useEffect(() => {
         if (gridItems.length > 0 && !gameOver) {
             startRandomItemInterval();
             setRandomItem(getRandomItem());
         }
-
         return () => clearInterval(intervalRef.current);
     }, [gridItems, gameOver]);
 
@@ -117,14 +85,15 @@ export default function Game(){
     async function handleClick(itemId){
         if (!randomItem) return; 
         const randomIndexMessage = Math.floor(Math.random()* wrongItemMessage.length);
+        
         if(itemId === randomItem.id){
             const timeTaken = initialTime - timer;
             
             setMessage("Good job! You're not that bad after all.");
             setGameOver(true);
-            setScore((prevScore) => [...prevScore, {id:uniqueId, score: timeTaken}]);
+            setScore((prevScore) => [...prevScore, {id:uniqueId, score: timeTaken, userName}]);
             clearInterval(intervalRef.current);
-            await postScore({ id: uniqueId, score: timeTaken });
+            await postScore({ id: uniqueId, score: timeTaken, userName }, userAuth.accessToken);
         } else {
             setWrongMessage(wrongItemMessage[randomIndexMessage]);
         }
@@ -136,8 +105,8 @@ export default function Game(){
         setMessage('');
         setWrongMessage('');
         setGameOver(false); 
-        setTimer(30);
-        setInitialTime(30);
+        setTimer(INITIAL_TIMER);
+        setInitialTime(INITIAL_TIMER);
         startRandomItemInterval();
     }
     return(
