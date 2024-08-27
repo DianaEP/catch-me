@@ -1,6 +1,6 @@
 {
     "/users*" : "/600/users$1",
-    "/gridItems*": "/600/gridItems$1",
-    "/score*": "/600/score$1"
+    "/gridItems*": "/660/gridItems$1",
+    "/score*": "/660/score$1"
     
   }

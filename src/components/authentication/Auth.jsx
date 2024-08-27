@@ -3,7 +3,7 @@ import './Auth.css';
 import PropTypes from 'prop-types';
 import FormValidation from './FormValidation';
 import { useContext } from 'react';
-import { UserAuth } from '../../App';
+import { AuthContext } from '../../App';
 
 const loginRegisterFields = {
     login: [
@@ -49,10 +49,14 @@ async function login(dataLogin,navigate, setUserAuth){
         })
         const body = await response.json();
         if(response.ok){
-            localStorage.setItem('accessToken' , JSON.stringify(body.accessToken));
-            setUserAuth(body.accessToken)
+            localStorage.setItem('accessToken' , body.accessToken);
+            localStorage.setItem('userId' , body.user.id);
+            setUserAuth({
+                accessToken : body.accessToken,
+                userId : body.user.id
+            })
             navigate('/')
-            // console.log(body);
+            console.log(body);
 
         }
         
@@ -63,7 +67,7 @@ async function login(dataLogin,navigate, setUserAuth){
 
 
 export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister, setDataLogin, setDataRegister}){
-    const {userAuth, setUserAuth} = useContext(UserAuth);
+    const {userAuth, setUserAuth} = useContext(AuthContext);
     const navigate = useNavigate();
     const fields = loginRegisterFields[currentPage];
 
@@ -73,7 +77,8 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
     const { errors, validateData, inputChange } = FormValidation({ data, setData });
 
 
-    console.log('auth'+userAuth);
+    console.log('auth'+userAuth.accessToken);
+
     const handleSubmitRegister = (e) => {
         e.preventDefault();
         const {confirmPassword, ...restDataRegister} = dataRegister;

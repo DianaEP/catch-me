@@ -1,12 +1,20 @@
 import { useContext, useEffect } from 'react'
 import './Score.css'
-import { ScoreContext } from '../../App'
+import { AuthContext, ScoreContext } from '../../App'
 
-async function getScore(setScore){
+async function getScore(setScore, token){
     try{
-        const response= await fetch('http://localhost:3000/score')
+        const response= await fetch('http://localhost:3000/score',{
+            headers: {
+                 Authorization: `Bearer ${token}`,
+                 'Content-Type': 'application/json',
+            }
+        }
+        )
         const data = await response.json();
         setScore(data)
+        console.log(token);
+        
     }catch(error){
         console.error('Error fetching scores:', error)
     }
@@ -14,9 +22,11 @@ async function getScore(setScore){
 
 export default function Score(){
     const {score, setScore} = useContext(ScoreContext);
-    console.log(score);
+    const {userAuth} = useContext(AuthContext);
+    console.log(userAuth);
+    console.log(userAuth.accessToken);
     useEffect(()=>{
-        getScore(setScore);
+        getScore(setScore, userAuth.accessToken);
     },[])
 
     const firstFiveScores = score
@@ -25,7 +35,7 @@ export default function Score(){
             index === score.findIndex((s)=> s.score === scoreCurrElem.score)) // is finding the first index of an element in the score array  that has the same score as the current scoreCurrElem.
         .slice(0,5) // create a new array with the first 5
 
-        console.log(firstFiveScores);
+        // console.log(firstFiveScores);
         
     
     return(

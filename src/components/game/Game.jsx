@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import imageSrc from '../../assets/kitty.svg'
 import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
-import { ScoreContext, UserAuth } from '../../App';
+import { AuthContext, ScoreContext} from '../../App';
 import { v4 as uuidv4 } from 'uuid';
 
 const wrongItemMessage =[
@@ -16,11 +16,11 @@ const wrongItemMessage =[
     "I'm so sleepy!"
 ]
 
-async function getGridItem(setGridItems,userAuth){
+async function getGridItem(setGridItems,token){
     try{
         const response = await fetch('http://localhost:3000/gridItems',{
             headers: {
-                Authorization: `Bearer ${userAuth}`,
+                Authorization: `Bearer ${token}`,
               },
         });
         const data = await response.json();
@@ -54,7 +54,7 @@ async function postScore(score){
 }
 
 export default function Game(){
-    const {userAuth} = useContext(UserAuth);
+    const {userAuth} = useContext(AuthContext);
 
     const { setScore, score } = useContext(ScoreContext);
     const [gridItems, setGridItems] = useState([]);
@@ -73,10 +73,11 @@ export default function Game(){
 
 
     useEffect(()=>{
-        if(userAuth){
-            getGridItem(setGridItems, userAuth)
+        const token = userAuth.accessToken
+        if(token){
+            getGridItem(setGridItems, token)
         }
-    },[userAuth])
+    },[userAuth.accessToken])
  
     useEffect(() => {
         if (gridItems.length > 0 && !gameOver) {

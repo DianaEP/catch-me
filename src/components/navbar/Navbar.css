@@ -43,7 +43,7 @@
     column-gap: 2rem;
  }
  
- .links-container li a{
+ .links-container li a, .logout-button{
      color: var(--font-color2);
      text-decoration: none;
      cursor: pointer;
@@ -54,7 +54,7 @@
      
  }
  
- .links-container li a::after {
+ .links-container li a::after, .logout-button::after {
      content: '';
      position: absolute;
      width: 0;
@@ -67,15 +67,18 @@
      -webkit-transition: width 0.3s ease;
  }
  
- .links-container li a:hover::after {
+ .links-container li a:hover::after, .logout-button:hover::after{
      width: 100%;
      left: 0;
      background: var(--color3);
  }
  
+.logout-button{
+    border: none;
+    font-size: 1rem;
+}
  
- 
- #login-link a{
+ #login-link a, .logout-button{
      color:var(--color3)
  }
  
