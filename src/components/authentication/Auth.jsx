@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../App';
 import { register } from '../../fetch';
 import { login } from '../../fetch';
+import Header from '../header/Header';
 
 const loginRegisterFields = {
     login: [
@@ -58,37 +59,38 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
         }
     };
     return(
-        <>
-        <div className="form-container" >
-            <form className='form-fields' onSubmit={currentPage === 'register' ? handleSubmitRegister : handleSubmitLogin}>
-                <h2>{currentPage}</h2>
-                {fields.map((field, index)=>(
-                    <div key={index} className='input-container'>
-                        <input  
-                           type={field.type} 
-                           placeholder={field.placeholder} 
-                           name={field.placeholder} 
-                           value={data[field.placeholder]} 
-                           onChange={inputChange}
-                           className={errors[field.placeholder] ? 'invalid-shadow' : ''}
-                        />
-                        {errors[field.placeholder] && (
-                            <span className="error-message">{errors[field.placeholder]}</span>
-                        )} 
+        
+        <div className="wrapper">
+            <Header/>
+            <div className="form-container" >
+                <form className='form-fields' onSubmit={currentPage === 'register' ? handleSubmitRegister : handleSubmitLogin}>
+                    <h2>{currentPage}</h2>
+                    {fields.map((field, index)=>(
+                        <div key={index} className='input-container'>
+                            <input  
+                                type={field.type} 
+                                placeholder={field.placeholder} 
+                                name={field.placeholder} 
+                                value={data[field.placeholder]} 
+                                onChange={inputChange}
+                                className={errors[field.placeholder] ? 'invalid-shadow' : ''}
+                            />
+                            {errors[field.placeholder] && (
+                                <span className="error-message">{errors[field.placeholder]}</span>
+                            )} 
 
-                    </div>
-                     
+                        </div>
+                    ))}
                 
-                ))}
-                
-                <button className='form-button'>{currentPage}</button>
-            </form>
-            <div className="link-container">
-                <p><span>{text}</span> <Link to={`/${nextPage}`}>{nextPage}</Link></p>
-            </div>
-            
+                    <button className='form-button'>{currentPage}</button>
+                </form>
+
+                <div className="link-container">
+                    <p><span>{text}</span> <Link to={`/${nextPage}`}>{nextPage}</Link></p>
+                </div>
             </div> 
-        </>
+        </div>
+        
     )
 }
 
