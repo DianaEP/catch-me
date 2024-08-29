@@ -38,6 +38,9 @@ function App() {
     }
   },[])
 
+  
+  
+
   // console.log('Current Path:', location.pathname);
 
   // private routes
@@ -49,10 +52,10 @@ function App() {
       
       <ScoreContext.Provider value={{score, setScore}}>
         <AuthContext.Provider value={{userAuth, setUserAuth}}>
-          {hideNavbar && <Navbar />}
+          {/* {hideNavbar && <Navbar />} */}
           <Routes>
             <Route path='/' element={isAuthenticated ? <Home/> : <Navigate to='/login'/>}></Route>
-            <Route path='/score' element={isAuthenticated ? <Score/> : <Navigate to='/login'/>}></Route>
+            {/* <Route path='/score' element={isAuthenticated ? <Score/> : <Navigate to='/login'/>}></Route> */}
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/register' element={<Register/>}></Route>
           </Routes>

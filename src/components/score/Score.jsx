@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react'
 import './Score.css'
 import { AuthContext, ScoreContext } from '../../App'
 import { getScore } from '../../fetch';
+import { FaPaw } from "react-icons/fa";
 
 
 
@@ -9,11 +10,15 @@ import { getScore } from '../../fetch';
 export default function Score(){
     const {score, setScore} = useContext(ScoreContext);
     const {userAuth} = useContext(AuthContext);
-    // console.log(userAuth);
+    
+
+    
     // console.log(userAuth.accessToken);
-    useEffect(()=>{
-        getScore(setScore, userAuth.accessToken);
-    },[])
+    useEffect(() => {
+        if (userAuth.accessToken) {
+          getScore(setScore, userAuth.accessToken);
+        }
+      }, [userAuth.accessToken, setScore]);
 
     const firstFiveScores = score
         .sort((a,b) => a.score - b.score) // sort ascending
@@ -31,13 +36,21 @@ export default function Score(){
                 {score.length === 0 ? (
                 <p>No scores available.</p>
             ) : (
-                <ul>
-                    {firstFiveScores.map((scoreEntry) => (
-                        <li key={scoreEntry.id}>
-                            {scoreEntry.userName}: {scoreEntry.score}s
-                        </li>
-                    ))}
-                </ul>
+            
+                 <div className='top-five'>
+                    <p>Top 5 scores</p>
+                    <ul>
+                        {firstFiveScores.map((scoreEntry, index) => (
+                            <li key={scoreEntry.id}>
+                                {index === 0 && (
+                                    <FaPaw />
+                                )}
+                                {scoreEntry.userName}: {scoreEntry.score}s
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                
             )}
                 </ul>
             </div>

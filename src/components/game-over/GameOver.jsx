@@ -1,33 +1,46 @@
-import './GameOver.css'
 import PropTypes from 'prop-types';
-import imageSrc from '../../assets/kitty.svg';
+import Modal from '../modal/Modal';
+import { useEffect, useState } from 'react';
+import Score from '../score/Score';
 
 
 
-export default function GameOver({message,resetGame,score}){
 
-    // console.log(score);
-    
-
+export default function GameOver({message,resetGame,score,handleLogout}){
+    const latestScore = score.length > 0 ? score[score.length - 1].score : 0;
+    const [showScores, setShowScores] = useState(false);
     function handleGameOverClick(){
         resetGame();
     }
 
-    const latestScore = score.length > 0 ? score[score.length - 1].score : 0;
+    function handleScores() {
+        setShowScores(true);
+    }
+
+    
+    
+    // console.log(score.length > 0);
+    
+    // console.log(score);
+    // console.log('gameOver' + latestScore);
+    
 
     return(
-        <div className="message-container">
-            <div className="message">
-                <h1>Game Over!</h1>
-                <div className="content">
-                    <img src={imageSrc} alt="game-over-image" />
-                    <p>{message}</p>
-                </div>
-                <p>Score :<span>{latestScore}s</span></p>
-                <button className='game-over-button' onClick={handleGameOverClick}>Play again</button>
-            </div>
-                
-        </div>
+        <>
+            <Modal type='gameOver' 
+               titleMessage='Game Over!' 
+               message={message} 
+               latestScore={latestScore} 
+               buttonTextOne="Play again" 
+               buttonTextTwo="Logout" 
+               buttonTextThree="Scores" 
+               onButtonClickOne={handleGameOverClick} 
+               onButtonClickTwo={handleLogout}
+               onButtonClickThree={handleScores}
+            />
+            {showScores && <Score />}
+        </>
+        
     )
 }
 
@@ -35,5 +48,6 @@ GameOver.propTypes = {
     message: PropTypes.any,
     resetGame: PropTypes.any,
     score: PropTypes.any,
+    handleLogout: PropTypes.any,
     
   }
