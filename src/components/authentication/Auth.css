@@ -143,6 +143,15 @@
     box-shadow: 0 1px 8px var(--color3);
 }
 
+.alert-msg{
+    color: var(--color3);
+    font-size: 1.5rem;
+    padding: 5rem;
+    border-radius: 25px;
+    box-shadow: 0 0px 10px 0 var(--color3);
+    text-align: center;
+}
+
 
 /* .link-container a:hover{
     color: var(--font-color2);

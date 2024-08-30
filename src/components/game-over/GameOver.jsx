@@ -1,16 +1,26 @@
 import PropTypes from 'prop-types';
 import Modal from '../modal/Modal';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Score from '../score/Score';
 import AlertModal from '../alert-modal/AlertModal';
+import { ScoreContext } from '../../App';
 
 
 
 
-export default function GameOver({message,resetGame,score,handleLogout}){
-    const latestScore = score.length > 0 ? score[score.length - 1].score : 0;
+export default function GameOver({message,resetGame,handleLogout}){
+    const {score} = useContext(ScoreContext);
+    const [latestScore, setLatestScore] = useState(0);
     const [showScores, setShowScores] = useState(false);
+    const newLatestScore = score.length > 0? score[score.length - 1].score : 0;
+   
+
+    useEffect(() => {  
+        setLatestScore(newLatestScore); 
+    }, []);
+
     function handleGameOverClick(){
+       
         resetGame();
     }
 

@@ -5,7 +5,7 @@ import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
 import { AuthContext, ScoreContext} from '../../App';
 import { v4 as uuidv4 } from 'uuid';
-import { getGridItem } from '../../fetch';
+import { deleteUser, getGridItem } from '../../fetch';
 import { postScore } from '../../fetch';
 import { getUserName } from '../../fetch';
 import { useNavigate } from 'react-router-dom';
@@ -41,6 +41,7 @@ export default function Game(){
     const intervalRef = useRef(null);
     const uniqueId = uuidv4();
 
+    console.log(userAuth);
     
 
 
@@ -97,17 +98,17 @@ export default function Game(){
             console.log(timeTaken);
             setMessage("Good job! You're not that bad after all.");
             setGameOver(true);
-            // setScore((prevScore) => [...prevScore, {id:uniqueId, score: timeTaken, userName}]);
+            setScore((prevScore) => [...prevScore, {id:uniqueId, score: timeTaken, userName, userId: userAuth.userId}]);
 
-            const newScore = { id: uniqueId, score: timeTaken, userName };
-    setScore(prevScore => {
-      console.log('Previous score:', prevScore);
-      const updatedScore = [...prevScore, newScore];
-      console.log('Updated score:', updatedScore);
-      return updatedScore;
-    });
+    //         const newScore = { id: uniqueId, score: timeTaken, userName };
+    // setScore(prevScore => {
+    //   console.log('Previous score:', prevScore);
+    //   const updatedScore = [...prevScore, newScore];
+    //   console.log('Updated score:', updatedScore);
+    //   return updatedScore;
+    // });
             clearInterval(intervalRef.current);
-            await postScore({ id: uniqueId, score: timeTaken, userName }, userAuth.accessToken);
+            await postScore({ id: uniqueId, score: timeTaken, userName,userId: userAuth.userId }, userAuth.accessToken);
         } else {
             setWrongMessage(wrongItemMessage[randomIndexMessage]);
         }
@@ -134,6 +135,30 @@ export default function Game(){
         navigate('/login');
     }
 
+    async function handleDeleteAccount(e){
+        e.preventDefault();
+        if (!userAuth || !userAuth.accessToken || !userAuth.userId) {
+            console.error('User is not authenticated');
+            return;
+        }
+        try{
+            const userConfirmedAction = await confirm('Are you sure you want to delete your account?') // confirmation box 
+            if(userConfirmedAction){
+              deleteUser(userAuth,navigate);
+              localStorage.removeItem('accessToken');
+              localStorage.removeItem('userAuth');
+              setUserAuth({ accessToken: null, userId: null });
+              navigate('/register');
+            } 
+            }catch(error) {
+              if (error !== false) {
+                console.error('Error deleting user account:', error);
+              } else {
+                console.log('Account deletion canceled by user.');
+              }
+            }
+    }
+
     function notShowModal(){
         setShowModal(false);
     }
@@ -142,11 +167,13 @@ export default function Game(){
             {showModal && (
                 <Modal 
                     type="welcome"
-                    titleMessage={`Welcome to the game, ${userName} !`}
+                    titleMessage={`Welcome, ${userName} !`}
                     buttonTextOne="Play" 
                     buttonTextTwo="Logout" 
+                    buttonTextThree="Delete Account" 
                     onButtonClickOne={notShowModal} 
                     onButtonClickTwo={handleLogout}
+                    onButtonClickThree={handleDeleteAccount}
                 />
             )}
 
@@ -173,7 +200,7 @@ export default function Game(){
                             ))}
                         </div>
                     </div>
-                    {gameOver && <GameOver message={message} resetGame={resetGame} score={score} handleLogout={handleLogout}/>}
+                    {gameOver && <GameOver message={message} resetGame={resetGame} handleLogout={handleLogout}/>}
                 </>
             )}
             

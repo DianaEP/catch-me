@@ -20,7 +20,7 @@ function App() {
 
   const location = useLocation(); 
   const currentPath = location.pathname.toLowerCase();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   
   useEffect(()=>{
@@ -36,9 +36,8 @@ function App() {
         accessToken : null,
         userId : null
       })
-      navigate('/login');  
     }
-  },[navigate])
+  },[])
 
   
   

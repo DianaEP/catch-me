@@ -1,6 +1,6 @@
 // --------------------------------- REGISTER -----------------------------------------
 
-export async function register(dataRegister,navigate,setUserAuth){
+export async function register(dataRegister,navigate,setUserAuth, setAlertMessage){
     try{
         const response = await fetch('http://localhost:3000/register',{
             method: "POST",
@@ -22,6 +22,13 @@ export async function register(dataRegister,navigate,setUserAuth){
             // console.log(body);
 
         }
+
+        if (!response.ok) {
+            if(response.status === 400){
+              setAlertMessage(`A user with this email address already exists. `);
+            }
+            return;    
+          }
        
         
     }catch(error){
@@ -31,7 +38,7 @@ export async function register(dataRegister,navigate,setUserAuth){
 
 // --------------------------------- LOGIN -----------------------------------------
 
-export async function login(dataLogin,navigate, setUserAuth){
+export async function login(dataLogin,navigate, setUserAuth,setAlertMessage){
     try{
         const response = await fetch('http://localhost:3000/login',{
             method: "POST",
@@ -53,6 +60,13 @@ export async function login(dataLogin,navigate, setUserAuth){
             // console.log(body);
 
         }
+
+        if (!response.ok) {
+            if(response.status === 400){
+              setAlertMessage(`Cannot find user.`);
+            }
+            return;    
+          }
         
     }catch(error){
         console.error('failed to fetch register'+ error)
@@ -147,5 +161,21 @@ export async function getUserName(userId,token,setUserName){
     }
 }
 
-// --------------------------------- GET SCORE WITH USER NAME-----------------------------------------
+// --------------------------------- DELETE ACCOUNT -----------------------------------------
 
+export async function deleteUser(userAuth,navigate){
+    try { 
+        const response = await fetch(`http://localhost:3000/users/${userAuth.userId}`,{
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${userAuth.accessToken}`
+          }
+        });
+  
+        if (response.ok) {
+          navigate('/register')
+        } 
+        }catch (error) {
+        console.error('Error deleting user account:', error); 
+      }
+}

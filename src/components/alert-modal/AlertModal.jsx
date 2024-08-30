@@ -7,8 +7,10 @@ export default function AlertModal({children, onClose}){
 
     return(
         <div className="alert-container">
-            <button onClick={onClose}><AiOutlineCloseSquare /></button>
-            {children}
+            <div className="alert-content">
+                <button onClick={onClose}><AiOutlineCloseSquare /></button>
+                {children}
+            </div>
         </div>
        
     )

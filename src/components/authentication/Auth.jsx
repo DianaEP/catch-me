@@ -2,11 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 import PropTypes from 'prop-types';
 import FormValidation from './FormValidation';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../App';
 import { register } from '../../fetch';
 import { login } from '../../fetch';
 import Header from '../header/Header';
+import AlertModal from '../alert-modal/AlertModal';
 
 const loginRegisterFields = {
     login: [
@@ -28,6 +29,8 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
     const {setUserAuth} = useContext(AuthContext);
     const navigate = useNavigate();
     const fields = loginRegisterFields[currentPage];
+    const [alertMessage, setAlertMessage] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
 
     const data = currentPage === 'login' ? dataLogin : dataRegister;
     const setData = currentPage === 'login' ? setDataLogin : setDataRegister;
@@ -41,12 +44,16 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
         e.preventDefault();
         const {confirmPassword, ...restDataRegister} = dataRegister;
         if(dataRegister.password !== confirmPassword){
-            console.log("password don't match");
-            
-            
+            setAlertMessage("Password don't match!")
+            setShowAlert(true);
+            return;   
         }
+
         if (validateData()) {
-            register(restDataRegister,navigate,setUserAuth)
+            register(restDataRegister,navigate,setUserAuth, (message) =>{
+                setAlertMessage(message);
+                setShowAlert(true);
+            })
             console.log('Form is valid');
         }
     };
@@ -54,10 +61,21 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
     const handleSubmitLogin = (e) => {
         e.preventDefault();
         if (validateData()) {
-            login(dataLogin,navigate,setUserAuth);
+            login(dataLogin,navigate,setUserAuth,(message) =>{
+                setAlertMessage(message);
+                setShowAlert(true);
+            });
             console.log('Form is valid');
         }
     };
+
+    const closeAlert = () => {
+        setShowAlert(false);
+        setAlertMessage('');
+    };
+
+
+
     return(
         
         <div className="wrapper">
@@ -89,6 +107,11 @@ export default function Auth({currentPage,text,nextPage, dataLogin,dataRegister,
                     <p><span>{text}</span> <Link to={`/${nextPage}`}>{nextPage}</Link></p>
                 </div>
             </div> 
+            {showAlert && (
+                <AlertModal onClose={closeAlert}>
+                    <p className='alert-msg'>{alertMessage}</p>
+                </AlertModal>
+            )}
         </div>
         
     )
