@@ -42,10 +42,9 @@ export default function Score(){
                     <ul>
                         {firstFiveScores.map((scoreEntry, index) => (
                             <li key={scoreEntry.id}>
-                                {index === 0 && (
-                                    <FaPaw />
-                                )}
-                                {scoreEntry.userName}: {scoreEntry.score}s
+                                {index === 0 && (<FaPaw style={{ marginRight: '8px' }}/>)}
+                                {index + 1}. {scoreEntry.userName}: {scoreEntry.score}s
+                                {index === 0 && <FaPaw style={{ marginLeft: '8px' }} />}
                             </li>
                         ))}
                     </ul>

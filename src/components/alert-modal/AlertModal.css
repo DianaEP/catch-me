@@ -1,0 +1,33 @@
+.alert-container{
+    position: fixed;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    background-color: #1e1e1ed9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.alert-container button{
+    border: none;
+    background-color: transparent;
+    color: var(--color3);
+    font-size: 2rem;
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2rem;
+}
+
+.alert-container button svg{
+    background-color: transparent;
+    box-shadow: 0px 0px 5px 0px var(--color3);
+    cursor: pointer;
+}
+
+
+

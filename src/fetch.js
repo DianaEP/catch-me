@@ -61,7 +61,7 @@ export async function login(dataLogin,navigate, setUserAuth){
 
 // --------------------------------- GET GRID ITEMS -----------------------------------------
 
-export async function getGridItem(setGridItems,token){
+export async function getGridItem(setGridItems,token,navigate){
     try{
         const response = await fetch('http://localhost:3000/gridItems',{
             headers: {
@@ -70,10 +70,13 @@ export async function getGridItem(setGridItems,token){
         });
         const data = await response.json();
         if(response.ok){
-
             setGridItems(data);
         }
-
+        if(response.status === 401){
+            localStorage.removeItem('accessToken'); 
+            localStorage.removeItem('userId');
+            navigate('/login') 
+        }
     }catch(error){
         console.error('Error fetching grid items:', error);
     }

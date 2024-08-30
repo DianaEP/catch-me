@@ -41,17 +41,15 @@ export default function Game(){
     const intervalRef = useRef(null);
     const uniqueId = uuidv4();
 
-    // useEffect(() => {
-    //     console.log('Current score in Game:', score);
-    //   }, [score]);
+    
 
 
     useEffect(()=>{
         if(userAuth.accessToken && userAuth.userId){
-            getGridItem(setGridItems, userAuth.accessToken);
+            getGridItem(setGridItems, userAuth.accessToken, navigate);
             getUserName(userAuth.userId,userAuth.accessToken, setUserName)
         }
-    },[userAuth.accessToken, userAuth.userId])
+    },[userAuth.accessToken, userAuth.userId,navigate])
 
     
     
@@ -144,7 +142,7 @@ export default function Game(){
             {showModal && (
                 <Modal 
                     type="welcome"
-                    titleMessage="Welcome to the Game!"
+                    titleMessage={`Welcome to the game, ${userName} !`}
                     buttonTextOne="Play" 
                     buttonTextTwo="Logout" 
                     onButtonClickOne={notShowModal} 
@@ -154,25 +152,26 @@ export default function Game(){
 
             {!showModal && (
                 <>
-                    <div className="timer-and-message">
-                        <p>Time: {timer}</p>
-                        {!gameOver && <p className='wrong-message'>{wrongMessage}</p>}
-                    </div>
-            
-                    <div className="game-container">
-                        {gridItems.map((item)=>(
-                            <div key={item.id} 
-                                 className='grid-item'
-                                 onClick={()=>handleClick(item.id)}>
-                                {randomItem && item.id === randomItem.id && (
-                                    <img
-                                        src={imageSrc}
-                                        alt="Randomly Moved Image"
-                                        className='random-img'
-                                    />
-                            )}</div>    
-                        ))}
-                
+                    <div className="game-wrapper">
+                        <div className="timer-and-message">
+                            <p>Time: {timer}</p>
+                            {!gameOver && <p className='wrong-message'>{wrongMessage}</p>}
+                        </div>
+
+                        <div className="game-container">
+                            {gridItems.map((item)=>(
+                                <div key={item.id} 
+                                    className='grid-item'
+                                    onClick={()=>handleClick(item.id)}>
+                                    {randomItem && item.id === randomItem.id && (
+                                        <img
+                                            src={imageSrc}
+                                            alt="Randomly Moved Image"
+                                            className='random-img'
+                                        />
+                                )}</div>    
+                            ))}
+                        </div>
                     </div>
                     {gameOver && <GameOver message={message} resetGame={resetGame} score={score} handleLogout={handleLogout}/>}
                 </>

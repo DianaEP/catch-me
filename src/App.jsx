@@ -1,5 +1,5 @@
 
-import { Navigate, Route, Routes, useLocation} from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate} from 'react-router-dom'
 import './App.css'
 import Navbar from './components/navbar/Navbar'
 import Home from './components/home/Home'
@@ -20,6 +20,7 @@ function App() {
 
   const location = useLocation(); 
   const currentPath = location.pathname.toLowerCase();
+  const navigate = useNavigate();
 
   
   useEffect(()=>{
@@ -34,9 +35,10 @@ function App() {
       setUserAuth({
         accessToken : null,
         userId : null
-      })  
+      })
+      navigate('/login');  
     }
-  },[])
+  },[navigate])
 
   
   

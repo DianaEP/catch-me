@@ -1,5 +1,14 @@
+.game-wrapper{
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left:50%;
+  transform: translate(-50% , -50%);
+}
+
 .game-container{
     width: 35%;
+    min-width: 280px; 
     aspect-ratio: 1 / 1;
     margin: 0 auto;
     border-radius: 10px;
@@ -10,6 +19,8 @@
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     padding: 1rem;
+
+  
 }
 
 .grid-item {
@@ -51,3 +62,17 @@
     font-size: 1.2rem;
     color: var(--font-color2);
   }
+
+  @media (max-width: 1600px) {
+    .game-container {
+        width: 40%; /* Increase width percentage for smaller screens */
+        min-width: 250px; /* Adjust the min-width if necessary */
+    }
+
+    .timer-and-message {
+        width: 40%; /* Adjust the width to keep the elements aligned */
+        font-size: 1rem; /* Reduce font size if needed */
+    }
+}
+
+

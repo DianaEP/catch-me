@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Modal from '../modal/Modal';
 import { useEffect, useState } from 'react';
 import Score from '../score/Score';
+import AlertModal from '../alert-modal/AlertModal';
 
 
 
@@ -15,6 +16,10 @@ export default function GameOver({message,resetGame,score,handleLogout}){
 
     function handleScores() {
         setShowScores(true);
+    }
+
+    function closeScores() {
+        setShowScores(false);
     }
 
     
@@ -38,7 +43,7 @@ export default function GameOver({message,resetGame,score,handleLogout}){
                onButtonClickTwo={handleLogout}
                onButtonClickThree={handleScores}
             />
-            {showScores && <Score />}
+            {showScores && <AlertModal onClose={closeScores}><Score/></AlertModal>}
         </>
         
     )

@@ -25,6 +25,7 @@
 
 .message h2{
     font-size: 3rem;
+    width: 70%;
     font-family: var(--font-family1);
     color: var(--color3);
     text-align: center;

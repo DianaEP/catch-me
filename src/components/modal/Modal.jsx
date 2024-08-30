@@ -22,7 +22,9 @@ export default function Modal({type, titleMessage, message,latestScore, onButton
                     <div className={modalClassButton}>
                         <button className='modal-button' onClick={onButtonClickOne}>{buttonTextOne}</button>
                         <button className='modal-button' onClick={onButtonClickTwo}>{buttonTextTwo}</button>
-                        <button className='modal-button' onClick={onButtonClickThree}>{buttonTextThree}</button>
+                        {type === 'gameOver' && (
+                            <button className='modal-button' onClick={onButtonClickThree}>{buttonTextThree}</button>      
+                    )}
 
                     </div>
 
