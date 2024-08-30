@@ -1,5 +1,20 @@
 {
-  "users": [],
+  "users": [
+    {
+      "email": "test@gmail.com",
+      "password": "$2a$10$izIu8LErSevUca1rGgdBK.6cybenFaodNxCkZudFI/2wjv9k2.UPS",
+      "firstName": "Martha",
+      "lastName": "Jones",
+      "id": 1
+    },
+    {
+      "email": "test2@gmail.com",
+      "password": "$2a$10$xebhfmjg6EZ66IAwRBem2Ob6fS05JwfU3DfRONH8Z/b8MeEuC1zQu",
+      "firstName": "Maya",
+      "lastName": "Brown",
+      "id": 2
+    }
+  ],
   "gridItems": [
     {
       "id": 1,
@@ -127,5 +142,36 @@
       "col": 5
     }
   ],
-  "score": []
+  "score": [
+    {
+      "id": "30b9f4e3-df3e-4489-b893-016e0a6a91ac",
+      "score": 2,
+      "userName": "Martha",
+      "userId": 1
+    },
+    {
+      "id": "27d7be6a-d718-4356-b18e-c76c67f4df0d",
+      "score": 26,
+      "userName": "Martha",
+      "userId": "1"
+    },
+    {
+      "id": "59ab2c74-4e19-4d93-8b23-7f54e8f2b4fe",
+      "score": 2,
+      "userName": "Maya",
+      "userId": 2
+    },
+    {
+      "id": "9f49a3b2-d9d9-4e63-84fa-133dd38902aa",
+      "score": 6,
+      "userName": "Maya",
+      "userId": 2
+    },
+    {
+      "id": "2931f2cf-53dd-40c6-94b6-d755cbaa9c6d",
+      "score": 27,
+      "userName": "Maya",
+      "userId": 2
+    }
+  ]
 }

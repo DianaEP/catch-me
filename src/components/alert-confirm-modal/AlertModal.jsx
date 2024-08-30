@@ -1,6 +1,6 @@
 import { AiOutlineCloseSquare } from "react-icons/ai";
-import './AlertModal.css'
-import { useState } from "react";
+import './AlertModal.css';
+import PropTypes from 'prop-types';
 
 export default function AlertModal({children, onClose}){
 
@@ -15,3 +15,9 @@ export default function AlertModal({children, onClose}){
        
     )
 }
+
+AlertModal.propTypes = {
+    children: PropTypes.any,
+    onClose: PropTypes.any,
+    
+  }

@@ -63,7 +63,7 @@ export async function login(dataLogin,navigate, setUserAuth,setAlertMessage){
 
         if (!response.ok) {
             if(response.status === 400){
-              setAlertMessage(`Cannot find user.`);
+              setAlertMessage(`Cannot find user. Register first.`);
             }
             return;    
           }

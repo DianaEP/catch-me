@@ -7,7 +7,7 @@ import { AuthContext } from '../../App';
 import { register } from '../../fetch';
 import { login } from '../../fetch';
 import Header from '../header/Header';
-import AlertModal from '../alert-modal/AlertModal';
+import AlertModal from '../alert-confirm-modal/AlertModal';
 
 const loginRegisterFields = {
     login: [

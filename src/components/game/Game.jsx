@@ -10,6 +10,7 @@ import { postScore } from '../../fetch';
 import { getUserName } from '../../fetch';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
+import { useConfirm } from '../alert-confirm-modal/ConfirmFunction';
 
 const wrongItemMessage =[
     "Wrong ... Try again!",
@@ -27,7 +28,7 @@ export default function Game(){
 
     const navigate = useNavigate();
     const {userAuth, setUserAuth} = useContext(AuthContext);
-    const { setScore, score } = useContext(ScoreContext);
+    const { setScore} = useContext(ScoreContext);
     const [gridItems, setGridItems] = useState([]);
     const [randomItem, setRandomItem] = useState(null);
     const [message, setMessage] = useState('');
@@ -37,6 +38,8 @@ export default function Game(){
     const [initialTime, setInitialTime] = useState(INITIAL_TIMER);
     const [userName, setUserName] = useState('');
     const [showModal, setShowModal] =useState(true);
+
+    const { showConfirm, ConfirmComponent } = useConfirm();
 
     const intervalRef = useRef(null);
     const uniqueId = uuidv4();
@@ -85,7 +88,7 @@ export default function Game(){
         intervalRef.current= setInterval(()=>{
             setTimer(prevTime => prevTime - 1);
             setRandomItem(getRandomItem())
-        },1000);
+        },500);
     }
 
 
@@ -99,14 +102,6 @@ export default function Game(){
             setMessage("Good job! You're not that bad after all.");
             setGameOver(true);
             setScore((prevScore) => [...prevScore, {id:uniqueId, score: timeTaken, userName, userId: userAuth.userId}]);
-
-    //         const newScore = { id: uniqueId, score: timeTaken, userName };
-    // setScore(prevScore => {
-    //   console.log('Previous score:', prevScore);
-    //   const updatedScore = [...prevScore, newScore];
-    //   console.log('Updated score:', updatedScore);
-    //   return updatedScore;
-    // });
             clearInterval(intervalRef.current);
             await postScore({ id: uniqueId, score: timeTaken, userName,userId: userAuth.userId }, userAuth.accessToken);
         } else {
@@ -142,7 +137,7 @@ export default function Game(){
             return;
         }
         try{
-            const userConfirmedAction = await confirm('Are you sure you want to delete your account?') // confirmation box 
+            const userConfirmedAction = await showConfirm(); // confirmation box 
             if(userConfirmedAction){
               deleteUser(userAuth,navigate);
               localStorage.removeItem('accessToken');
@@ -204,7 +199,7 @@ export default function Game(){
                 </>
             )}
             
-            
+            <ConfirmComponent/>
         </>
     )
 }

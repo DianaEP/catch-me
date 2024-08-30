@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import Modal from '../modal/Modal';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Score from '../score/Score';
-import AlertModal from '../alert-modal/AlertModal';
+import AlertModal from '../alert-confirm-modal/AlertModal';
 import { ScoreContext } from '../../App';
 
 
@@ -32,12 +32,6 @@ export default function GameOver({message,resetGame,handleLogout}){
         setShowScores(false);
     }
 
-    
-    
-    // console.log(score.length > 0);
-    
-    // console.log(score);
-    // console.log('gameOver' + latestScore);
     
 
     return(

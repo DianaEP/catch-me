@@ -1,6 +1,19 @@
 import imageSrc from '../../assets/kitty.svg'
 import './Modal.css';
-export default function Modal({type, titleMessage, message,latestScore, onButtonClickOne, onButtonClickTwo, onButtonClickThree, buttonTextOne, buttonTextTwo, buttonTextThree}){
+import PropTypes from 'prop-types';
+
+
+export default function Modal({
+    type, 
+    titleMessage, 
+    message,
+    latestScore, 
+    onButtonClickOne, 
+    onButtonClickTwo, 
+    onButtonClickThree, 
+    buttonTextOne, 
+    buttonTextTwo, 
+    buttonTextThree}){
 
     const modalClass = type === 'gameOver' ? 'modal-column' : 'modal-row';
     const modalClassButton = type === 'gameOver' ? 'button-row' : 'button-column';
@@ -33,3 +46,17 @@ export default function Modal({type, titleMessage, message,latestScore, onButton
         </div>
     )
 }
+
+Modal.propTypes = {
+    type: PropTypes.any,
+    titleMessage: PropTypes.any,
+    message: PropTypes.any,
+    setScore: PropTypes.any,
+    latestScore: PropTypes.any,
+    onButtonClickOne: PropTypes.any,
+    onButtonClickTwo: PropTypes.any,
+    onButtonClickThree: PropTypes.any,
+    buttonTextOne: PropTypes.any,
+    buttonTextTwo: PropTypes.any,
+    buttonTextThree: PropTypes.any,  
+  }
