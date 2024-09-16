@@ -9,7 +9,7 @@ export const useGameIntervals = (getRandomItem, setRandomItem, setTimer) => {
     const startIntervals = useCallback(()=>{
         intervalRef.current.randomItemInterval= setInterval(()=>{
             setRandomItem(getRandomItem())
-        },1000);
+        },500);
 
         intervalRef.current.timerInterval= setInterval(()=>{
             setTimer(prevTime => prevTime - 1);
