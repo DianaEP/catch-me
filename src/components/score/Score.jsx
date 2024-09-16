@@ -11,9 +11,6 @@ export default function Score(){
     const {score, setScore} = useContext(ScoreContext);
     const {userAuth} = useContext(AuthContext);
     
-
-    
-    // console.log(userAuth.accessToken);
     useEffect(() => {
         if (userAuth.accessToken) {
           getScore(setScore, userAuth.accessToken);
@@ -26,9 +23,6 @@ export default function Score(){
             index === score.findIndex((s)=> s.score === scoreCurrElem.score)) // is finding the first index of an element in the score array  that has the same score as the current scoreCurrElem.
         .slice(0,5) // create a new array with the first 5
 
-        // console.log(firstFiveScores);
-        
-    
     return(
         <>
             <div className="score-container">

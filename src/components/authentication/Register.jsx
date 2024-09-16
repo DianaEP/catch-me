@@ -18,13 +18,3 @@ export default function Register(){
         </>
     )
 }
-
-
-// function handleRegisterChange(e){
-//     const{value, name} = e.target;
-//     setDataRegister((prevInput)=>({
-//         ...prevInput,
-//         [name]:value
-//     }))
-// }
-// console.log(dataRegister);

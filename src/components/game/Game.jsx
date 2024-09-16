@@ -1,5 +1,5 @@
 import './Game.css'
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import imageSrc from '../../assets/kitty.svg'
 import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import { useConfirm } from '../alert-confirm-modal/ConfirmFunction';
 
-const wrongItemMessage =[
+const wrongItemMessage = [
     "Wrong ... Try again!",
     "Try harder!",
     "I told you you can't!",
@@ -21,6 +21,8 @@ const wrongItemMessage =[
     "I'm bored!",
     "I'm so sleepy!"
 ]
+
+
 
 const INITIAL_TIMER = 30;
 
@@ -41,12 +43,11 @@ export default function Game(){
 
     const { showConfirm, ConfirmComponent } = useConfirm();
 
-    const intervalRef = useRef(null);
+    const intervalRef = useRef({
+        randomItemInterval: null,
+        timerInterval: null
+    });
     const uniqueId = uuidv4();
-
-    console.log(userAuth);
-    
-
 
     useEffect(()=>{
         if(userAuth.accessToken && userAuth.userId){
@@ -55,41 +56,47 @@ export default function Game(){
         }
     },[userAuth.accessToken, userAuth.userId,navigate])
 
+    const getRandomItem = useCallback(()=>{
+         if (gridItems.length === 0) return null
+         const randomIndex= Math.floor(Math.random()* gridItems.length);
+         return gridItems[randomIndex];
+    },[gridItems])
+
+    const startIntervals = useCallback(()=>{
+        intervalRef.current.randomItemInterval= setInterval(()=>{
+            setRandomItem(getRandomItem())
+        },1000);
+
+        intervalRef.current.timerInterval= setInterval(()=>{
+            setTimer(prevTime => prevTime - 1);
+        },1000);
+    },[getRandomItem])
+        
     
+    const clearIntervals = useCallback(()=>{
+        clearInterval(intervalRef.current.randomItemInterval);
+        clearInterval(intervalRef.current.timerInterval);
+    },[])
     
- 
+
+
     useEffect(() => {
         if (!showModal && gridItems.length > 0 && !gameOver) {
-            startRandomItemInterval();
+            startIntervals();
             setRandomItem(getRandomItem());
         }
-        return () => clearInterval(intervalRef.current);
-    }, [gridItems, gameOver, showModal]);
-
+        return () => clearIntervals();
+    }, [gridItems, gameOver, showModal, startIntervals, clearIntervals,getRandomItem]);
+    
     useEffect(()=>{
         if(timer <= 0){
-            clearInterval(intervalRef.current);
+            clearIntervals();
             setMessage("I knew it! Time is up... Try again!")
             setGameOver(true);
             setScore((prevScore) => [...prevScore, { id: uniqueId, score: 0 }]);
         }
-    },[timer])
-
-
-
-    function getRandomItem(){
-        if (gridItems.length === 0) return null
-        const randomIndex= Math.floor(Math.random()* gridItems.length);
-        return gridItems[randomIndex];
-    }
-
-   
-    function startRandomItemInterval(){
-        intervalRef.current= setInterval(()=>{
-            setTimer(prevTime => prevTime - 1);
-            setRandomItem(getRandomItem())
-        },500);
-    }
+    },[timer, uniqueId, clearIntervals, setScore])
+    
 
 
     async function handleClick(itemId){
@@ -102,7 +109,7 @@ export default function Game(){
             setMessage("Good job! You're not that bad after all.");
             setGameOver(true);
             setScore((prevScore) => [...prevScore, {id:uniqueId, score: timeTaken, userName, userId: userAuth.userId}]);
-            clearInterval(intervalRef.current);
+            clearIntervals();
             await postScore({ id: uniqueId, score: timeTaken, userName,userId: userAuth.userId }, userAuth.accessToken);
         } else {
             setWrongMessage(wrongItemMessage[randomIndexMessage]);
@@ -117,7 +124,7 @@ export default function Game(){
         setGameOver(false); 
         setTimer(INITIAL_TIMER);
         setInitialTime(INITIAL_TIMER);
-        startRandomItemInterval();
+        startIntervals();
     }
 
     function handleLogout(){

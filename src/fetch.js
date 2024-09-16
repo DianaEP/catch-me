@@ -19,7 +19,6 @@ export async function register(dataRegister,navigate,setUserAuth, setAlertMessag
                 userId : body.user.id
             })
             navigate('/')
-            // console.log(body);
 
         }
 
@@ -57,8 +56,6 @@ export async function login(dataLogin,navigate, setUserAuth,setAlertMessage){
                 userId : body.user.id
             })
             navigate('/')
-            // console.log(body);
-
         }
 
         if (!response.ok) {
@@ -130,7 +127,6 @@ export async function getScore(setScore, token){
         )
         const data = await response.json();
         setScore(data)
-        // console.log(token);
         
     }catch(error){
         console.error('Error fetching scores:', error)
@@ -151,7 +147,6 @@ export async function getUserName(userId,token,setUserName){
 
         if(response.ok){
             const data = await response.json();
-            // console.log(data.firstName);
             setUserName(data.firstName)
             
         }

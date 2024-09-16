@@ -33,7 +33,6 @@
     background-color: transparent;
     color: var(--color3);
     font-size: 2rem;
-    /* margin-right: 0.5rem; */
 }
 
 .alert-container button svg{

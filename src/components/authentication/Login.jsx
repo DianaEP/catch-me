@@ -8,16 +8,6 @@ export default function Login(){
         password: ''
     })
 
-    // function handleLoginChange(e){
-    //     const{value, name} = e.target;
-    //     setDataLogin((prevInput)=>({
-    //         ...prevInput,
-    //         [name]:value
-    //     }))
-    // }
-
-    // console.log(dataLogin);
-    
     return(
         <>
 

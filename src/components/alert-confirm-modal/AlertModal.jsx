@@ -3,8 +3,6 @@ import './AlertModal.css';
 import PropTypes from 'prop-types';
 
 export default function AlertModal({children, onClose}){
-
-
     return(
         <div className="alert-container">
             <div className="alert-content">
