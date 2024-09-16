@@ -8,20 +8,9 @@ import { register } from '../../fetch';
 import { login } from '../../fetch';
 import Header from '../header/Header';
 import AlertModal from '../alert-confirm-modal/AlertModal';
+import { loginRegisterFields } from '../../utils';
 
-const loginRegisterFields = {
-    login: [
-        { placeholder: 'email', type: 'text'},
-        { placeholder: 'password', type: 'password'}
-    ],
-    register: [
-        { placeholder: 'firstName', type: 'text'},
-        { placeholder: 'lastName', type: 'text'},
-        { placeholder: 'email', type: 'email'},
-        { placeholder: 'password', type: 'password'},
-        { placeholder: 'confirmPassword', type: 'password'},
-    ]
-}
+
 
 
 

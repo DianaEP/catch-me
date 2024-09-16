@@ -1,5 +1,5 @@
 import './Game.css'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import imageSrc from '../../assets/kitty.svg'
 import GameOver from '../game-over/GameOver';
 import PropTypes from 'prop-types';
@@ -11,26 +11,16 @@ import { getUserName } from '../../fetch';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import { useConfirm } from '../alert-confirm-modal/ConfirmFunction';
-
-const wrongItemMessage = [
-    "Wrong ... Try again!",
-    "Try harder!",
-    "I told you you can't!",
-    "I'm too fast...I know!",
-    "Man... you're slow!",
-    "I'm bored!",
-    "I'm so sleepy!"
-]
+import { useGameIntervals } from '../../customHooks';
+import { INITIAL_TIMER, wrongItemMessage } from '../../utils';
 
 
-
-const INITIAL_TIMER = 30;
 
 export default function Game(){
-
     const navigate = useNavigate();
     const {userAuth, setUserAuth} = useContext(AuthContext);
     const { setScore} = useContext(ScoreContext);
+
     const [gridItems, setGridItems] = useState([]);
     const [randomItem, setRandomItem] = useState(null);
     const [message, setMessage] = useState('');
@@ -42,12 +32,18 @@ export default function Game(){
     const [showModal, setShowModal] =useState(true);
 
     const { showConfirm, ConfirmComponent } = useConfirm();
-
-    const intervalRef = useRef({
-        randomItemInterval: null,
-        timerInterval: null
-    });
     const uniqueId = uuidv4();
+    
+    // use useCallBack for getRandomItem so the function is not created every time the component re-executes, creating a loop in useEffect
+    const getRandomItem = useCallback(()=>{
+        if (gridItems.length === 0) return null
+        const randomIndex= Math.floor(Math.random()* gridItems.length);
+        return gridItems[randomIndex];
+    },[gridItems])
+
+    // destructure useGameHook from customHooks file
+    const {startIntervals, clearIntervals} = useGameIntervals(getRandomItem, setRandomItem,setTimer)
+   
 
     useEffect(()=>{
         if(userAuth.accessToken && userAuth.userId){
@@ -55,29 +51,6 @@ export default function Game(){
             getUserName(userAuth.userId,userAuth.accessToken, setUserName)
         }
     },[userAuth.accessToken, userAuth.userId,navigate])
-
-    const getRandomItem = useCallback(()=>{
-         if (gridItems.length === 0) return null
-         const randomIndex= Math.floor(Math.random()* gridItems.length);
-         return gridItems[randomIndex];
-    },[gridItems])
-
-    const startIntervals = useCallback(()=>{
-        intervalRef.current.randomItemInterval= setInterval(()=>{
-            setRandomItem(getRandomItem())
-        },1000);
-
-        intervalRef.current.timerInterval= setInterval(()=>{
-            setTimer(prevTime => prevTime - 1);
-        },1000);
-    },[getRandomItem])
-        
-    
-    const clearIntervals = useCallback(()=>{
-        clearInterval(intervalRef.current.randomItemInterval);
-        clearInterval(intervalRef.current.timerInterval);
-    },[])
-    
 
 
     useEffect(() => {
